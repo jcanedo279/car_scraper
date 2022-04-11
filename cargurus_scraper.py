@@ -18,17 +18,12 @@ starting_page = 1
 BUFFER_LINE = ' '*5
 
 
-clean_data = "data/_{sns.car_name}_clean.csv"
-
 
 
 ########################
 ### Grab cached data ###
 ########################
 
-car_dir = f'data_{sns.car_name}/'
-if not os.path.exists(car_dir):
-    os.mkdir(car_dir)
 
 known_cars = set()
 file_path = os.path.abspath(__file__)
@@ -37,14 +32,14 @@ print("Started scraping local datasets\r", end="")
 if find_last_page:
     max_page = 0
     
-    for _file in os.listdir( '/'.join( file_path.split('/')[:-1] ) + f'/data_{sns.car_name}' ):
+    for _file in os.listdir( '/'.join( file_path.split('/')[:-1] ) + f'/data/data_{sns.car_name}' ):
         
         ## Find max page
         page_ind = _file.split('_')[-1].replace('.csv','')
         max_page = max(int(page_ind), max_page)
         
         ## Add references
-        df_i = pd.read_csv(f'data_{sns.car_name}/{_file}')
+        df_i = pd.read_csv(f'data/data_{sns.car_name}/{_file}')
         for _, row_i in df_i.iterrows():
             ref_i = (row_i['car_title'], row_i['price'], row_i['mileage'])
             known_cars.add(ref_i)

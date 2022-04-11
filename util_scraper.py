@@ -16,7 +16,6 @@ from types import SimpleNamespace
 
 
 
-
 ###########################
 ## CONFIGURE ENVIRONMENT ##
 ###########################
@@ -44,6 +43,41 @@ def parse_settings():
 
 settings = parse_settings()
 sns = SimpleNamespace(**settings)
+
+
+
+
+
+##########
+## DATA ##
+##########
+
+# clean_data = "data/_{sns.car_name}_clean.csv"
+cleaned_path = f'data/{sns.car_name}_clean.csv'
+nonoutlier_path = f'data/{sns.car_name}_no.csv'
+
+cats_path = f'data/{sns.car_name}_cats_to_labels.json'
+norm_path = f'data/{sns.car_name}_cats_to_norm.json'
+
+
+
+car_dir = f'data/data_{sns.car_name}/'
+if not os.path.exists(car_dir):
+    os.mkdir(car_dir)
+
+CNST_SLEEP = 0.125
+def skip_datapoint(driver):
+    driver.back()
+    time.sleep(CNST_SLEEP)
+
+
+def raw_data_i(i):
+    return f"data/data_{sns.car_name}/{sns.car_name}_raw_{i}.csv"
+
+
+def push_data(data, page):
+    df_i = pd.DataFrame(data)
+    df_i.to_csv(raw_data_i(page), columns=df_i.columns, index=False, encoding="ascii")
 
 
 
@@ -78,22 +112,6 @@ class DriverHandler():
     def __exit__(self, exc_type,exc_value, exc_traceback):
         print("\nContext scraper closed!")
         self.driver.quit()
-
-
-
-CNST_SLEEP = 0.125
-def skip_datapoint(driver):
-    driver.back()
-    time.sleep(CNST_SLEEP)
-
-
-def raw_data_i(i):
-    return f"data_{sns.car_name}/{sns.car_name}_raw_{i}.csv"
-
-
-def push_data(data, page):
-    df_i = pd.DataFrame(data)
-    df_i.to_csv(raw_data_i(page), columns=df_i.columns, index=False, encoding="ascii")
 
 
 
