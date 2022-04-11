@@ -1,0 +1,9 @@
+
+__pycache__/
+
+
+## Custom
+data/*
+
+# !data/model
+
